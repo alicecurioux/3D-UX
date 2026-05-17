@@ -28,16 +28,16 @@ export default function App() {
 
       <div className="stage">
         <div className="stack">
-          {VERSIONS.map((v) => {
+          {VERSIONS.map((v, i) => {
             const z = stack.length - stack.indexOf(v.id); // higher z = closer to front
-            const depth = stack.indexOf(v.id); // 0 = front, n = back
             return (
               <Release
                 key={v.id}
                 label={v.label}
-                depth={depth}
+                positionIndex={i}
+                totalCount={VERSIONS.length}
                 zIndex={z}
-                isFront={depth === 0}
+                isFront={stack[0] === v.id}
                 onActivate={() => bringToFront(v.id)}
               />
             );

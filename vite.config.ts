@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// Repo name is "3D-UX" — Pages serves the site under that path.
+// Served from custom domain root (3d-ux.curioux.com).
 export default defineConfig({
-  base: "/3D-UX/",
+  base: "/",
   plugins: [react()],
   server: {
     host: "0.0.0.0",

@@ -30,19 +30,25 @@ const CARDS: CardData[] = [
 
 type Props = {
   label: string;
-  depth: number; // 0 = front
+  positionIndex: number; // 0 = bottom-left, totalCount-1 = top-right
+  totalCount: number;
   zIndex: number;
   isFront: boolean;
   onActivate: () => void;
 };
 
-export default function Release({ label, depth, zIndex, isFront, onActivate }: Props) {
+export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate }: Props) {
+  // Fixed location based on version order — diagonal from bottom-left to top-right.
+  // Position never changes when the stack reshuffles; only zIndex does.
+  const stepsFromRight = totalCount - 1 - positionIndex;
+  const x = -stepsFromRight * 80;
+  const y = -positionIndex * 80;
   return (
     <div
       className={`release${isFront ? " release--front" : " release--back"}`}
       style={{
         zIndex,
-        transform: `translate(${-depth * 80}px, ${-depth * 80}px)`,
+        transform: `translate(${x}px, ${y}px)`,
       }}
       onClick={() => {
         if (!isFront) onActivate();

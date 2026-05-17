@@ -46,7 +46,7 @@ body {
 }
 
 .page-title {
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 400;
   margin: 0;
 }
@@ -218,9 +218,9 @@ body {
   background: var(--color-red);
 }
 
-/* Interaction #1: hover scales card to 120% in place. */
+/* Interaction #1: hover scales card to 200% in place. */
 .card:hover {
-  transform: scale(1.2);
+  transform: scale(2);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   z-index: 5;
 }

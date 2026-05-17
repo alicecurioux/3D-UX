@@ -5,7 +5,7 @@ A React + Vite implementation of the layered "Release" canvas from the
 
 ## Interactivity
 
-1. **Card hover**: hovering any card scales it to 120% in place (centered
+1. **Card hover**: hovering any card scales it to 200% in place (centered
    transform, smooth easing) and returns to default on mouse leave.
 2. **Leaf through versions**: clicking the visible label/strip of any
    background release (`MVP`, `Version 1`, `Version 2`, `… Version N`)
