@@ -1,0 +1,289 @@
+:root {
+  --color-bg: #1e1e1e;
+  --color-release-bg: #686868;
+  --color-release-border: #d9d9d9;
+  --color-teal: #046172;
+  --color-red: #e93c1f;
+  --color-white: #ffffff;
+
+  /* Release uses Figma-original pixel dimensions, then scaled down via --scale. */
+  --release-w: 2600px;
+  --release-h: 1922px;
+  --release-pad: 120px;
+  --card: 240px;
+  --gap: 120px;
+  --stack-offset: 80px;
+
+  /* Scale to fit. Tweak based on viewport width via media queries. */
+  --scale: 0.45;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  font-family: "Lato", system-ui, sans-serif;
+  color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px 48px 64px;
+  gap: 24px;
+}
+
+.page-title {
+  font-size: 40px;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ---- Stage & stack ---- */
+
+.stage {
+  /* Reserve room for the scaled stack plus the staircase offsets and shadows. */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.stack {
+  position: relative;
+  /* Scale the whole stack so the design fits the viewport. */
+  transform: scale(var(--scale));
+  transform-origin: top left;
+  /* Reserve space for back-staircase offsets (3 steps * 80px) plus shadow. */
+  width: calc(var(--release-w) + 3 * var(--stack-offset));
+  height: calc(var(--release-h) + 3 * var(--stack-offset));
+  /* Compensate for transform so layout flow uses scaled box size. */
+  margin-right: calc((var(--release-w) + 3 * var(--stack-offset)) * (var(--scale) - 1));
+  margin-bottom: calc((var(--release-h) + 3 * var(--stack-offset)) * (var(--scale) - 1));
+}
+
+/* ---- Release ---- */
+
+.release {
+  position: absolute;
+  top: calc(3 * var(--stack-offset));
+  left: calc(3 * var(--stack-offset));
+  width: var(--release-w);
+  height: var(--release-h);
+  background: var(--color-release-bg);
+  border: 1px solid var(--color-release-border);
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.release--back {
+  cursor: pointer;
+}
+
+.release--back:hover {
+  filter: brightness(1.05);
+}
+
+.release--front {
+  cursor: default;
+}
+
+/* Version label + evolution header sit in the top-left strip. The version
+   label is high enough to stay visible inside the 80px "peek" of a back
+   release. */
+.release__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: contents;
+  pointer-events: none;
+}
+
+.release__version-label {
+  position: absolute;
+  top: 23px;
+  left: 23px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.release__evolution {
+  position: absolute;
+  top: 100px;
+  left: 23px;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* ---- Card grid inside the release ---- */
+
+.release__grid {
+  position: absolute;
+  /* Matches the Figma "Cards" subframe (120px release padding). The depth
+     header sits at top=0 of this grid; placing the grid at 120px in release
+     coords means that header lands below the 80px peek strip and stays
+     hidden behind the front release for back releases. */
+  top: 120px;
+  left: 120px;
+  width: 2400px;
+  height: 1680px;
+  display: grid;
+  grid-template-columns: repeat(7, var(--card));
+  grid-template-rows: repeat(5, var(--card));
+  column-gap: var(--gap);
+  row-gap: var(--gap);
+}
+
+.release__depth-header {
+  position: absolute;
+  top: 0;
+  left: 1008px;
+  font-size: 36px;
+  line-height: 1.15;
+  pointer-events: none;
+}
+
+.release__depth-line1 {
+  font-weight: 400;
+}
+
+.release__depth-line2 {
+  font-weight: 300;
+}
+
+.release__width-header {
+  position: absolute;
+  top: 588px;
+  left: 0;
+  font-size: 36px;
+  line-height: 1.15;
+  pointer-events: none;
+}
+
+.release__width-line1 {
+  font-weight: 400;
+}
+
+.release__width-line2 {
+  font-weight: 300;
+}
+
+.release__arrows {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---- Card (hoverable unit) ---- */
+
+.card {
+  position: relative;
+  width: var(--card);
+  height: var(--card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.card--teal {
+  background: var(--color-teal);
+}
+
+.card--red {
+  background: var(--color-red);
+}
+
+/* Interaction #1: hover scales card to 120% in place. */
+.card:hover {
+  transform: scale(1.2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  z-index: 5;
+}
+
+.card__number {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.card__title {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.card__description {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.25;
+  flex: 1;
+}
+
+.card__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card__icon .material-symbols-outlined {
+  font-size: 32px;
+  color: var(--color-white);
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+}
+
+/* Disable card hover on background releases (they're partially covered, so it
+   feels odd to interact with the bits that poke out). */
+.release--back .card {
+  pointer-events: none;
+}
+
+/* On back releases, only the version label should peek out. Hide everything
+   else so slivers don't poke into the visible left/top strips. */
+.release--back .release__evolution,
+.release--back .release__depth-header,
+.release--back .release__width-header,
+.release--back .release__arrows,
+.release--back .card {
+  display: none;
+}
+
+/* ---- Responsive scaling ---- */
+@media (max-width: 1600px) {
+  :root { --scale: 0.42; }
+}
+@media (max-width: 1400px) {
+  :root { --scale: 0.36; }
+}
+@media (max-width: 1200px) {
+  :root { --scale: 0.30; }
+}
+@media (max-width: 900px) {
+  :root { --scale: 0.24; }
+}
