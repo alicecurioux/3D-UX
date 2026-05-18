@@ -16,7 +16,7 @@ const CARDS: CardData[] = [
   // Teal vertical (Depth)
   { number: "01", title: "Surface", description: "What you see on the screen, e.g, colors, type, spacing, corners, drop shadow...", icon: "visibility", col: 3, row: 1, tone: "teal" },
   { number: "02", title: "Skeleton", description: "How elements are laid out on the screen for interactions, e.g, lists, tables, charts...", icon: "smartphone", col: 3, row: 2, tone: "teal" },
-  { number: "03", title: "Structure", description: "Map out content and information relationships for user navigation", icon: "account_tree", col: 3, row: 3, tone: "teal" },
+  { number: "03", title: "Structure", description: "Mapping of content and information relationships for user navigation", icon: "account_tree", col: 3, row: 3, tone: "teal" },
   { number: "04", title: "Scope", description: "Usage and interaction requirements & specifications", icon: "format_list_bulleted", col: 3, row: 4, tone: "teal" },
   { number: "05", title: "Strategy", description: "Determining the right approach to develop & evolve UX to attain biz/project goals", icon: "strategy", col: 3, row: 5, tone: "teal" },
   // Red horizontal (Width). Structure at col 3 is shared (already drawn as teal).
