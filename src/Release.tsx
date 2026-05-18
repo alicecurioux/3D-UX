@@ -86,6 +86,7 @@ export default function Release({ label, positionIndex, totalCount, zIndex, isFr
             key={`${card.number}-${card.title}`}
             className={`card card--${card.tone}`}
             style={{ gridColumn: card.col, gridRow: card.row }}
+            tabIndex={0}
           >
             <div className="card__number">{card.number}</div>
             <div className="card__title">{card.title}</div>

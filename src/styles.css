@@ -217,11 +217,13 @@ body {
   background: var(--color-red);
 }
 
-/* Interaction #1: hover scales card to 200% in place. */
-.card:hover {
-  transform: scale(2);
+/* Interaction #1: hover/tap scales card to a consistent ~360px actual size at any viewport scale. */
+.card:hover,
+.card:focus {
+  transform: scale(calc(1.5 / var(--scale)));
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   z-index: 5;
+  outline: none;
 }
 
 .card__number {
