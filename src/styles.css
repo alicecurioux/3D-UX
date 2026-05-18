@@ -217,10 +217,11 @@ body {
   background: var(--color-red);
 }
 
-/* Interaction #1: hover/tap scales card to a consistent ~360px actual size at any viewport scale. */
+/* Interaction #1: hover/tap scales card. Base is 2× (desktop); mobile breakpoints
+   tune the multiplier so the expanded card stays ~50% of viewport width. */
 .card:hover,
 .card:focus {
-  transform: scale(calc(1.5 / var(--scale)));
+  transform: scale(2);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   z-index: 5;
   outline: none;
@@ -299,6 +300,9 @@ body {
 }
 
 /* ---- Mobile layout tweaks ---- */
+@media (max-width: 900px) {
+  .card:hover, .card:focus { transform: scale(3); }
+}
 @media (max-width: 768px) {
   .app {
     padding: 20px 20px 40px;
@@ -314,6 +318,10 @@ body {
   .card {
     will-change: auto;
   }
+  .card:hover, .card:focus { transform: scale(4); }
+}
+@media (max-width: 600px) {
+  .card:hover, .card:focus { transform: scale(5); }
 }
 @media (max-width: 480px) {
   .app {
@@ -322,4 +330,5 @@ body {
   .page-title {
     font-size: 18px;
   }
+  .card:hover, .card:focus { transform: scale(6); }
 }
