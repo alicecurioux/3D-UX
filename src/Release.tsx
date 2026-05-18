@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { Icon } from "./icons";
+import { Icon, type IconName } from "./icons";
 
-type CardData = {
+export type CardData = {
   number: string;
   title: string;
   description: string;
@@ -37,23 +35,15 @@ type Props = {
   zIndex: number;
   isFront: boolean;
   onActivate: () => void;
+  onCardSelect: (card: CardData) => void;
 };
 
-export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate }: Props) {
+export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate, onCardSelect }: Props) {
   // Fixed location based on version order — diagonal from bottom-left to top-right.
   // Position never changes when the stack reshuffles; only zIndex does.
   const stepsFromRight = totalCount - 1 - positionIndex;
   const x = -stepsFromRight * 80;
   const y = -positionIndex * 80;
-
-  const [activeCard, setActiveCard] = useState<CardData | null>(null);
-
-  useEffect(() => {
-    if (!activeCard) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setActiveCard(null); };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [activeCard]);
 
   return (
     <div
@@ -100,9 +90,10 @@ export default function Release({ label, positionIndex, totalCount, zIndex, isFr
             style={{ gridColumn: card.col, gridRow: card.row }}
             tabIndex={0}
             onClick={(e) => {
-              if (!isFront || window.innerWidth > 768) return;
+              if (!isFront) return;
+              if (!window.matchMedia("(max-width: 768px)").matches) return;
               e.stopPropagation();
-              setActiveCard(card);
+              onCardSelect(card);
             }}
           >
             <div className="card__number">{card.number}</div>
@@ -114,23 +105,6 @@ export default function Release({ label, positionIndex, totalCount, zIndex, isFr
           </div>
         ))}
       </div>
-
-      {/* Modal portaled to body so position:fixed escapes the release's translate() transform */}
-      {activeCard && createPortal(
-        <div className="card-modal" onClick={() => setActiveCard(null)}>
-          <div
-            className={`card-modal__content card--${activeCard.tone}`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button className="card-modal__close" onClick={() => setActiveCard(null)}>✕</button>
-            <div className="card__number">{activeCard.number}</div>
-            <div className="card__title">{activeCard.title}</div>
-            <div className="card__description">{activeCard.description}</div>
-            <div className="card__icon"><Icon name={activeCard.icon} /></div>
-          </div>
-        </div>,
-        document.body
-      )}
     </div>
   );
 }
