@@ -91,7 +91,7 @@ export default function Release({ label, positionIndex, totalCount, zIndex, isFr
             tabIndex={0}
             onClick={(e) => {
               if (!isFront) return;
-              if (!window.matchMedia("(max-width: 768px)").matches) return;
+              if (!window.matchMedia("(hover: none)").matches) return;
               e.stopPropagation();
               onCardSelect(card);
             }}

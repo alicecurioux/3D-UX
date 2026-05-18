@@ -300,9 +300,6 @@ body {
 }
 
 /* ---- Mobile layout tweaks ---- */
-@media (max-width: 900px) {
-  .card:hover, .card:focus { transform: scale(3); }
-}
 @media (max-width: 768px) {
   .app {
     padding: 20px 20px 40px;
@@ -318,8 +315,6 @@ body {
   .card {
     will-change: auto;
   }
-  /* Modal handles card detail on mobile — suppress in-place scale expansion */
-  .card:hover, .card:focus { transform: none; }
 }
 @media (max-width: 480px) {
   .app {
@@ -328,6 +323,11 @@ body {
   .page-title {
     font-size: 18px;
   }
+}
+
+/* On touch devices the modal handles card detail — suppress in-place scale expansion. */
+@media (hover: none) {
+  .card:hover, .card:focus { transform: none; box-shadow: none; z-index: auto; }
 }
 
 /* ---- Mobile card modal ---- */
