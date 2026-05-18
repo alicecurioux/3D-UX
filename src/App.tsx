@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <h1 className="page-title">What UX Design Actually Is</h1>
+      <h1 className="page-title">The 3 Dimensions of UX Design</h1>
 
       <div className="stage">
         <div className="stack">
