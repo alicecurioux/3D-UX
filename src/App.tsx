@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Release, { type CardData } from "./Release";
 import { Icon } from "./icons";
 
@@ -12,9 +12,9 @@ const VERSIONS: { id: VersionId; label: string }[] = [
 ];
 
 export default function App() {
-  // Stack order: first element is at the FRONT (highest z-index).
   const [stack, setStack] = useState<VersionId[]>(["mvp", "v1", "v2", "vn"]);
   const [activeCard, setActiveCard] = useState<CardData | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const bringToFront = (id: VersionId) => {
     setStack((prev) => {
@@ -24,11 +24,17 @@ export default function App() {
     });
   };
 
+  // Open/close the native dialog in sync with activeCard state.
+  // showModal() renders in the browser top-layer — immune to CSS transforms
+  // and overflow:hidden on any ancestor.
   useEffect(() => {
-    if (!activeCard) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setActiveCard(null); };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (activeCard && !dialog.open) {
+      dialog.showModal();
+    } else if (!activeCard && dialog.open) {
+      dialog.close();
+    }
   }, [activeCard]);
 
   return (
@@ -38,7 +44,7 @@ export default function App() {
       <div className="stage">
         <div className="stack">
           {VERSIONS.map((v, i) => {
-            const z = stack.length - stack.indexOf(v.id); // higher z = closer to front
+            const z = stack.length - stack.indexOf(v.id);
             return (
               <Release
                 key={v.id}
@@ -55,21 +61,23 @@ export default function App() {
         </div>
       </div>
 
-      {/* Mobile card modal — rendered here at app root, outside any transform context */}
-      {activeCard && (
-        <div className="card-modal" onClick={() => setActiveCard(null)}>
-          <div
-            className={`card-modal__content card--${activeCard.tone}`}
-            onClick={(e) => e.stopPropagation()}
-          >
+      {/* Native <dialog> with showModal() renders in browser top-layer */}
+      <dialog
+        ref={dialogRef}
+        className="card-modal-dialog"
+        onClick={(e) => { if (e.target === dialogRef.current) setActiveCard(null); }}
+        onClose={() => setActiveCard(null)}
+      >
+        {activeCard && (
+          <div className={`card-modal__content card--${activeCard.tone}`}>
             <button className="card-modal__close" onClick={() => setActiveCard(null)}>✕</button>
             <div className="card__number">{activeCard.number}</div>
             <div className="card__title">{activeCard.title}</div>
             <div className="card__description">{activeCard.description}</div>
             <div className="card__icon"><Icon name={activeCard.icon} /></div>
           </div>
-        </div>
-      )}
+        )}
+      </dialog>
     </div>
   );
 }
