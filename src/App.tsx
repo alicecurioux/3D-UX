@@ -1,5 +1,6 @@
-import { useState } from "react";
-import Release from "./Release";
+import { useState, useEffect } from "react";
+import Release, { type CardData } from "./Release";
+import { Icon } from "./icons";
 
 type VersionId = "mvp" | "v1" | "v2" | "vn";
 
@@ -13,6 +14,7 @@ const VERSIONS: { id: VersionId; label: string }[] = [
 export default function App() {
   // Stack order: first element is at the FRONT (highest z-index).
   const [stack, setStack] = useState<VersionId[]>(["mvp", "v1", "v2", "vn"]);
+  const [activeCard, setActiveCard] = useState<CardData | null>(null);
 
   const bringToFront = (id: VersionId) => {
     setStack((prev) => {
@@ -21,6 +23,13 @@ export default function App() {
       return [id, ...rest];
     });
   };
+
+  useEffect(() => {
+    if (!activeCard) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setActiveCard(null); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [activeCard]);
 
   return (
     <div className="app">
@@ -39,11 +48,28 @@ export default function App() {
                 zIndex={z}
                 isFront={stack[0] === v.id}
                 onActivate={() => bringToFront(v.id)}
+                onCardSelect={setActiveCard}
               />
             );
           })}
         </div>
       </div>
+
+      {/* Mobile card modal — rendered here at app root, outside any transform context */}
+      {activeCard && (
+        <div className="card-modal" onClick={() => setActiveCard(null)}>
+          <div
+            className={`card-modal__content card--${activeCard.tone}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="card-modal__close" onClick={() => setActiveCard(null)}>✕</button>
+            <div className="card__number">{activeCard.number}</div>
+            <div className="card__title">{activeCard.title}</div>
+            <div className="card__description">{activeCard.description}</div>
+            <div className="card__icon"><Icon name={activeCard.icon} /></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
