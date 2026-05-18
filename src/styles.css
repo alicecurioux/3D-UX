@@ -337,7 +337,8 @@ dialog.card-modal-dialog {
   border: none;
   padding: 0;
   background: transparent;
-  width: min(300px, 85vw);
+  width: min(300px, 85dvw);
+  max-height: 90dvh;
   border-radius: 4px;
   overflow: visible;
 }
@@ -347,13 +348,14 @@ dialog.card-modal-dialog::backdrop {
 }
 
 .card-modal__content {
-  width: min(300px, 85vw);
+  width: 100%;
   padding: 24px;
   border-radius: 4px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  color: var(--color-white);
 }
 
 .card-modal__content .card__number      { font-size: 22px; font-weight: 300; }
