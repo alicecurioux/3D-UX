@@ -1,10 +1,10 @@
-import { Icon } from "./icons";
+import { Icon, type IconName } from "./icons";
 
 type CardData = {
   number: string;
   title: string;
   description: string;
-  icon: string; // Material Symbols name
+  icon: IconName;
   col: number; // 1..7
   row: number; // 1..5
   tone: "teal" | "red";
