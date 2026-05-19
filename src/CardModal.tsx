@@ -24,7 +24,11 @@ export default function CardModal({ card, size, onClose }: Props) {
     <div className="card-modal-backdrop" onClick={onClose} aria-modal="true" role="dialog">
       <div
         className={`card-modal card-modal--${card.tone}`}
-        style={{ width: size.width, height: size.height }}
+        style={{
+          width: size.width,
+          height: size.height,
+          ["--modal-scale" as string]: Math.max(0.5, size.width / 400),
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="card-modal__number">{card.number}</div>
