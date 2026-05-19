@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Release from "./Release";
+import Release, { type CardData } from "./Release";
+import CardModal from "./CardModal";
 
 type VersionId = "mvp" | "v1" | "v2" | "vn";
 
@@ -13,6 +14,7 @@ const VERSIONS: { id: VersionId; label: string }[] = [
 export default function App() {
   // Stack order: first element is at the FRONT (highest z-index).
   const [stack, setStack] = useState<VersionId[]>(["mvp", "v1", "v2", "vn"]);
+  const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
 
   const bringToFront = (id: VersionId) => {
     setStack((prev) => {
@@ -39,11 +41,13 @@ export default function App() {
                 zIndex={z}
                 isFront={stack[0] === v.id}
                 onActivate={() => bringToFront(v.id)}
+                onCardClick={setSelectedCard}
               />
             );
           })}
         </div>
       </div>
+      <CardModal card={selectedCard} onClose={() => setSelectedCard(null)} />
     </div>
   );
 }

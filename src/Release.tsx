@@ -1,6 +1,6 @@
 import { Icon } from "./icons";
 
-type CardData = {
+export type CardData = {
   number: string;
   title: string;
   description: string;
@@ -35,9 +35,10 @@ type Props = {
   zIndex: number;
   isFront: boolean;
   onActivate: () => void;
+  onCardClick: (card: CardData) => void;
 };
 
-export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate }: Props) {
+export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate, onCardClick }: Props) {
   // Fixed location based on version order — diagonal from bottom-left to top-right.
   // Position never changes when the stack reshuffles; only zIndex does.
   const stepsFromRight = totalCount - 1 - positionIndex;
@@ -86,6 +87,7 @@ export default function Release({ label, positionIndex, totalCount, zIndex, isFr
             key={`${card.number}-${card.title}`}
             className={`card card--${card.tone}`}
             style={{ gridColumn: card.col, gridRow: card.row }}
+            onClick={(e) => { e.stopPropagation(); onCardClick(card); }}
           >
             <div className="card__number">{card.number}</div>
             <div className="card__title">{card.title}</div>
