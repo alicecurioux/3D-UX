@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "./icons";
 import type { CardData } from "./Release";
 
@@ -7,7 +7,28 @@ type Props = {
   onClose: () => void;
 };
 
+function useVisualViewportWidth() {
+  const [width, setWidth] = useState(
+    () => window.visualViewport?.width ?? window.innerWidth
+  );
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => setWidth(vv.width);
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, []);
+  return width;
+}
+
 export default function CardModal({ card, onClose }: Props) {
+  const vpWidth = useVisualViewportWidth();
+  const modalWidth = Math.min(400, vpWidth * 0.9);
+
   useEffect(() => {
     if (!card) return;
     const handler = (e: KeyboardEvent) => {
@@ -23,6 +44,7 @@ export default function CardModal({ card, onClose }: Props) {
     <div className="card-modal-backdrop" onClick={onClose} aria-modal="true" role="dialog">
       <div
         className={`card-modal card-modal--${card.tone}`}
+        style={{ width: modalWidth }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="card-modal__number">{card.number}</div>
