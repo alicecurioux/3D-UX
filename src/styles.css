@@ -288,6 +288,8 @@ body {
 }
 @media (max-width: 900px) {
   :root { --scale: 0.24; }
+  .card__title { font-size: 36px; }
+  .card:hover .card__title { font-size: 24px; }
 }
 @media (max-width: 768px) {
   :root { --scale: 0.20; }
