@@ -368,4 +368,45 @@ body {
 }
 @media (max-width: 900px) {
   :root { --scale: 0.24; }
+  .card__title { font-size: 30px; }
+}
+@media (max-width: 768px) {
+  :root { --scale: 0.20; }
+}
+@media (max-width: 600px) {
+  :root { --scale: 0.17; }
+}
+@media (max-width: 480px) {
+  :root { --scale: 0.14; }
+}
+
+/* ---- Mobile layout tweaks ---- */
+@media (max-width: 768px) {
+  .app {
+    padding: 20px 20px 40px;
+    gap: 16px;
+  }
+  .page-title {
+    font-size: 22px;
+  }
+  .stage {
+    overflow: auto;
+    justify-content: flex-start;
+  }
+  .card {
+    will-change: auto;
+  }
+}
+@media (max-width: 480px) {
+  .app {
+    padding: 16px 16px 32px;
+  }
+  .page-title {
+    font-size: 18px;
+  }
+}
+
+/* On touch devices suppress in-place hover — card click opens the modal instead. */
+@media (hover: none) {
+  .card:hover, .card:focus { transform: none; box-shadow: none; z-index: auto; outline: none; }
 }

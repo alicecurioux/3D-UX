@@ -1,5 +1,5 @@
 // Material Symbols outlined paths, viewBox 0 0 24 24.
-const PATHS: Record<string, string> = {
+const PATHS = {
   visibility:
     "M12 9a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5M3.18 12C4.83 8.36 8.24 6 12 6s7.17 2.36 8.82 6c-1.65 3.64-5.06 6-8.82 6s-7.17-2.36-8.82-6Z",
   smartphone:
@@ -28,7 +28,9 @@ const PATHS: Record<string, string> = {
     "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z",
 };
 
-export function Icon({ name }: { name: string }) {
+export type IconName = keyof typeof PATHS;
+
+export function Icon({ name }: { name: IconName }) {
   const d = PATHS[name];
   if (!d) return null;
   return (
