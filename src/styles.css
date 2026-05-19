@@ -207,7 +207,6 @@ body {
   transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: center center;
-  will-change: transform;
 }
 
 .card--teal {
@@ -392,9 +391,6 @@ body {
   .stage {
     overflow: auto;
     justify-content: flex-start;
-  }
-  .card {
-    will-change: auto;
   }
 }
 @media (max-width: 480px) {
