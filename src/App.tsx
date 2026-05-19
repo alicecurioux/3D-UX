@@ -15,6 +15,7 @@ export default function App() {
   // Stack order: first element is at the FRONT (highest z-index).
   const [stack, setStack] = useState<VersionId[]>(["mvp", "v1", "v2", "vn"]);
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
+  const [modalWidth, setModalWidth] = useState(400);
 
   const bringToFront = (id: VersionId) => {
     setStack((prev) => {
@@ -22,6 +23,12 @@ export default function App() {
       const rest = prev.filter((v) => v !== id);
       return [id, ...rest];
     });
+  };
+
+  const openCard = (card: CardData) => {
+    const vpw = window.visualViewport?.width ?? window.innerWidth;
+    setModalWidth(Math.min(400, vpw * 0.9));
+    setSelectedCard(card);
   };
 
   return (
@@ -41,13 +48,13 @@ export default function App() {
                 zIndex={z}
                 isFront={stack[0] === v.id}
                 onActivate={() => bringToFront(v.id)}
-                onCardClick={setSelectedCard}
+                onCardClick={openCard}
               />
             );
           })}
         </div>
       </div>
-      <CardModal card={selectedCard} onClose={() => setSelectedCard(null)} />
+      <CardModal card={selectedCard} width={modalWidth} onClose={() => setSelectedCard(null)} />
     </div>
   );
 }
