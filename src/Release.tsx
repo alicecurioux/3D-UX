@@ -35,16 +35,15 @@ type Props = {
   zIndex: number;
   isFront: boolean;
   onActivate: () => void;
-  onCardSelect: (card: CardData) => void;
+  onCardClick: (card: CardData) => void;
 };
 
-export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate, onCardSelect }: Props) {
+export default function Release({ label, positionIndex, totalCount, zIndex, isFront, onActivate, onCardClick }: Props) {
   // Fixed location based on version order — diagonal from bottom-left to top-right.
   // Position never changes when the stack reshuffles; only zIndex does.
   const stepsFromRight = totalCount - 1 - positionIndex;
   const x = -stepsFromRight * 80;
   const y = -positionIndex * 80;
-
   return (
     <div
       className={`release${isFront ? " release--front" : " release--back"}`}
@@ -89,12 +88,7 @@ export default function Release({ label, positionIndex, totalCount, zIndex, isFr
             className={`card card--${card.tone}`}
             style={{ gridColumn: card.col, gridRow: card.row }}
             tabIndex={0}
-            onClick={(e) => {
-              if (!isFront) return;
-              if (!window.matchMedia("(hover: none)").matches) return;
-              e.stopPropagation();
-              onCardSelect(card);
-            }}
+            onClick={(e) => { e.stopPropagation(); onCardClick(card); }}
           >
             <div className="card__number">{card.number}</div>
             <div className="card__title">{card.title}</div>
