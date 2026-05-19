@@ -4,11 +4,11 @@ import type { CardData } from "./Release";
 
 type Props = {
   card: CardData | null;
-  width: number;
+  size: { width: number; height: number };
   onClose: () => void;
 };
 
-export default function CardModal({ card, width, onClose }: Props) {
+export default function CardModal({ card, size, onClose }: Props) {
   useEffect(() => {
     if (!card) return;
     const handler = (e: KeyboardEvent) => {
@@ -24,7 +24,7 @@ export default function CardModal({ card, width, onClose }: Props) {
     <div className="card-modal-backdrop" onClick={onClose} aria-modal="true" role="dialog">
       <div
         className={`card-modal card-modal--${card.tone}`}
-        style={{ width }}
+        style={{ width: size.width, height: size.height }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="card-modal__number">{card.number}</div>

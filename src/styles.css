@@ -293,6 +293,9 @@ body {
   color: var(--color-white);
   border-radius: 8px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .card-modal--teal {
